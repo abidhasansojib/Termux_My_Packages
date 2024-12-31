@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# Define source and destination directories
+SOURCE="/sdcard/code"
+DEST="$HOME/code"
+
+# Create the destination directory if it doesn't exist
+mkdir -p "$DEST"
+
+# Copy all files and directories recursively from source to destination
+cp -r "$SOURCE"/* "$DEST"
