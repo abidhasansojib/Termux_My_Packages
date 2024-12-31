@@ -1,0 +1,35 @@
+#!/data/data/com.termux/files/usr/bin/bash
+
+# Function to kill all running VNC servers
+kill_vnc() {
+    echo "Killing all running VNC servers..."
+
+    # List all running VNC servers and extract the display numbers
+    vnc_servers=$(vncserver -list | grep -oP '(:\d+)' | tr -d ':')
+
+    # Check if any VNC servers are running
+    if [ -z "$vnc_servers" ]; then
+        echo "No VNC servers are currently running."
+        return 0
+    fi
+
+    # Kill each running VNC server
+    for display in $vnc_servers; do
+        echo "Killing VNC server on display :$display..."
+        vncserver -kill :$display
+    done
+
+    echo "All running VNC servers have been killed."
+}
+
+# Main script logic
+if [[ "$1" == "kill" ]]; then
+    # If argument is 'kill', only kill servers
+    kill_vnc
+else
+    # Default behavior: Kill all VNC servers and start a new one
+    kill_vnc
+    echo "Starting new VNC server..."
+    vncserver :1 -geometry 720x1550 -depth 24
+    echo "VNC server started on :1"
+fi
